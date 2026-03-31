@@ -1,5 +1,6 @@
 package test;
 
+import java.util.List;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
@@ -31,5 +32,20 @@ public class DepartmentTest {
 		int depID = sc.nextInt();
 		departDao.deleteById(depID);
 		System.out.println("Deleted! department " + depID + " deleted");
+		
+
+		System.out.println("==== Test 4 - FindById ====");
+		System.out.print("Digite um inteiro: ");
+		depID = sc.nextInt();
+		
+		Department department2 = departDao.findById(depID);
+		System.out.println("Departamento encontrado: "+department2);
+		
+		System.out.println("==== Test 5 - FindAll ====");
+		List<Department> list = departDao.findAll();
+		
+		for (Department department3 : list) {
+			System.out.println(department3);
+		}
 	}
 }
