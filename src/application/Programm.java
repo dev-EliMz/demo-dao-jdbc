@@ -34,12 +34,21 @@ public class Programm {
 		Seller newSeller = new Seller(null, "Greg", "greg@email.com", new Date(), 4000.0, department);
 		sellerDao.insert(newSeller);
 		System.out.println("Inserted! new id: " + newSeller.getId());
-		*/
 		
 		System.out.println("\n--- TEST 5: Update on seller table ---");
 		seller = sellerDao.findById(1);
 		seller.setName("Joao Jorge");
 		sellerDao.update(seller);
-		System.out.println("Updated! " + seller);
+		System.out.println("Updated! " + seller);*/
+		
+		System.out.println("\n--- TEST 6: Deletion on seller table ---");
+		int id = 9;
+		Seller newSeller = sellerDao.findById(id);
+		
+		System.out.println(newSeller);
+		
+		sellerDao.deleteById(id);
+		System.out.println("Seller (id = " + id + ") deleted!");
+		
 	}
 }
