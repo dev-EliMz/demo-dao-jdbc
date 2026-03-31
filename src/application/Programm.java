@@ -30,9 +30,16 @@ public class Programm {
 			System.out.println(seller2);
 		}
 		
-		System.out.println("\n--- TEST 4: Add on seller table ---");
+		/*System.out.println("\n--- TEST 4: Add on seller table ---");
 		Seller newSeller = new Seller(null, "Greg", "greg@email.com", new Date(), 4000.0, department);
 		sellerDao.insert(newSeller);
 		System.out.println("Inserted! new id: " + newSeller.getId());
+		*/
+		
+		System.out.println("\n--- TEST 5: Update on seller table ---");
+		seller = sellerDao.findById(1);
+		seller.setName("Joao Jorge");
+		sellerDao.update(seller);
+		System.out.println("Updated! " + seller);
 	}
 }
