@@ -29,11 +29,11 @@ public class Seller implements Serializable {
 		this.department = department;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -91,7 +91,7 @@ public class Seller implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Seller other = (Seller) obj;
-		return id == other.id;
+		return Objects.equals(id, other.id);
 	}
 
 	@Override

@@ -87,7 +87,7 @@ public class SellerDaoJDBC implements SellerDao{
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public void deleteById(Integer id) {
 		PreparedStatement st = null;
 		
 		try {
@@ -104,7 +104,7 @@ public class SellerDaoJDBC implements SellerDao{
 	}
 
 	@Override
-	public Seller findById(int id) {
+	public Seller findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		

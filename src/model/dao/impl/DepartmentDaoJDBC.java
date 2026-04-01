@@ -10,6 +10,7 @@ import java.util.List;
 
 import db.DB;
 import db.DBException;
+import db.DBIntegrityException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 
@@ -75,7 +76,7 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public void deleteById(Integer id) {
 		PreparedStatement st = null;
 		
 		try {
@@ -85,14 +86,14 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 			
 			st.executeUpdate();
 		} catch (SQLException e) {
-			throw new DBException(e.getMessage());
+			throw new DBIntegrityException("Erro de integridade ao tentar deletar departamento!", e);
 		} finally {
 			DB.closeStatement(st);
 		}
 	}
 
 	@Override
-	public Department findById(int id) {
+	public Department findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
