@@ -6,17 +6,20 @@ import java.util.Scanner;
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
 import model.entities.Department;
+import services.DepartmentService;
 
-public class DepartmentTest {
+public class DepartmentTest2 {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("---------- Department DAO testing ----------");
+		DepartmentService services = new DepartmentService();
+		
+		System.out.println("---------- Department services testing ----------");
 		System.out.println("==== Test 1 - Insertion into department ====");
 		Department department = new Department(null, "Architecture");
-		DepartmentDao departDao = DaoFactory.createDepartmentDao();
+		
 		
 		System.out.println("Object before insertion: " + department);
-		departDao.insert(department);
+		services.insert(department);
 		System.out.println("Object after insertion into table (id returned): " + department);
 		
 		System.out.println("==== Test 2 - Updating department ====");
@@ -24,13 +27,13 @@ public class DepartmentTest {
 		department.setName("Robotics");
 		
 		
-		departDao.update(department);
+		services.update(department);
 		System.out.println("Updated! department: " + department + ", old name: " + name);
 		
 		System.out.println("==== Test 3 - Deletion from department ====");
 		System.out.print("Digite um inteiro: ");
 		int depID = sc.nextInt();
-		departDao.deleteById(depID);
+		services.deleteById(depID);
 		System.out.println("Deleted! department " + depID + " deleted");
 		
 
@@ -38,11 +41,11 @@ public class DepartmentTest {
 		System.out.print("Digite um inteiro: ");
 		depID = sc.nextInt();
 		
-		Department department2 = departDao.findById(depID);
+		Department department2 = services.findById(depID);
 		System.out.println("Departamento encontrado: "+department2);
 		
 		System.out.println("==== Test 5 - FindAll ====");
-		List<Department> list = departDao.findAll();
+		List<Department> list = services.findAll();
 		
 		for (Department department3 : list) {
 			System.out.println(department3);
