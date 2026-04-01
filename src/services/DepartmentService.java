@@ -41,7 +41,7 @@ public class DepartmentService {
 		return department;
 	}
 	
-	public void nulldeleteById(Integer id) {
+	public void deleteById(Integer id) {
 		if (id == null) throw new ValidationException("O id é obrigatório!");
 		
 		Department department = dao.findById(id);
