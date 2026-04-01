@@ -7,5 +7,9 @@ public class DBIntegrityException extends RuntimeException {
 	public DBIntegrityException(String msg) {
 		super(msg);
 	}
+	
+	public DBIntegrityException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
 
 }
