@@ -3,8 +3,6 @@ package test;
 import java.util.List;
 import java.util.Scanner;
 
-import model.dao.DaoFactory;
-import model.dao.DepartmentDao;
 import model.entities.Department;
 import services.DepartmentService;
 
@@ -50,5 +48,7 @@ public class DepartmentTest2 {
 		for (Department department3 : list) {
 			System.out.println(department3);
 		}
+		
+		sc.close();
 	}
 }

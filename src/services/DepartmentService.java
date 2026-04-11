@@ -11,50 +11,57 @@ import model.dao.DepartmentDao;
 import model.entities.Department;
 
 public class DepartmentService {
-	
+
 	private final DepartmentDao dao = DaoFactory.createDepartmentDao();
-	
+
 	private void validateDepartment(Department department) {
+		if (department == null) {
+			throw new ValidationException("O departamento não pode ser nulo.");
+		}
 		if (department.getName() == null || department.getName().isBlank()) {
-			throw new ValidationException("O nome do departamento não pode ser vazio!");
+			throw new ValidationException("O nome do departamento não pode ser vazio.");
 		}
 	}
-	
+
 	public void insert(Department department) {
 		validateDepartment(department);
-		
+
 		dao.insert(department);
 	}
-	
+
 	public void update(Department department) {
 		validateDepartment(department);
-		
+
 		dao.update(department);
 	}
-	
+
 	public Department findById(Integer id) {
-		if (id == null) throw new ValidationException("O id é obrigatório!");
-		
+		if (id == null)
+			throw new ValidationException("O id é obrigatório!");
+
 		Department department = dao.findById(id);
-		if (department == null) throw new EntityNotFoundException("Departamento não encontrado!");
-		
+		if (department == null)
+			throw new EntityNotFoundException("Departamento não encontrado!");
+
 		return department;
 	}
-	
+
 	public void deleteById(Integer id) {
-		if (id == null) throw new ValidationException("O id é obrigatório!");
-		
-		Department department = dao.findById(id);
-		if (department == null) throw new EntityNotFoundException("Departamento não encontrado!");
-		
+		if (id == null)
+			throw new ValidationException("O id é obrigatório para a operação!");
+
+		findById(id);
+
 		try {
 			dao.deleteById(id);
 		} catch (DBIntegrityException e) {
-			throw new BusinessException("Não foi possível deletar o departamento pois ele possui vendedores associados");
+			throw new BusinessException(
+					"Não foi possível deletar o departamento pois ele possui vendedores associados");
 		}
 	}
-	
+
 	public List<Department> findAll() {
+		
 		return dao.findAll();
 	}
 }
