@@ -21,6 +21,8 @@ public class SellerMenu {
 	public SellerMenu(SellerService sellerService, DepartmentService departmentService) {
 		this.sellerService = sellerService;
 		this.departmentService = departmentService;
+		
+		sdf.setLenient(false);
 	}
 
 	private String scanName(Scanner sc, String entity) {
@@ -133,13 +135,16 @@ public class SellerMenu {
 
 		int sellID;
 		Seller seller = null;
+		Seller current = null;
 		
 		while (true) {
 
 			while (true) {
 				try {
 					sellID = Integer.parseInt(scanId(sc, "vendedor"));
-					sellerService.findById(sellID);
+					current = sellerService.findById(sellID);
+					
+					System.out.println("Dados atuais do vendedor: " + current);
 
 					break;
 				} catch (NumberFormatException e) {
@@ -150,6 +155,7 @@ public class SellerMenu {
 			}
 
 			seller = readSellerData(sc);
+			seller.setId(sellID);
 
 			try {
 				sellerService.update(seller);
