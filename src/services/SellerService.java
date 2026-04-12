@@ -54,14 +54,14 @@ public class SellerService {
 
 		Seller seller = sellerDao.findById(id);
 		if (seller == null)
-			throw new EntityNotFoundException("Vendedor não encontrado");
+			throw new EntityNotFoundException("Vendedor não encontrado.");
 
 		return seller;
 	}
 
 	public void deleteById(Integer id) {
 		if (id == null)
-			throw new ValidationException("O id é obrigatório!");
+			throw new ValidationException("O id é obrigatório para a operação!");
 
 		findById(id);
 

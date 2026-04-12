@@ -37,11 +37,11 @@ public class DepartmentService {
 
 	public Department findById(Integer id) {
 		if (id == null)
-			throw new ValidationException("O id é obrigatório!");
+			throw new ValidationException("O id é obrigatório para a operação!");
 
 		Department department = dao.findById(id);
 		if (department == null)
-			throw new EntityNotFoundException("Departamento não encontrado!");
+			throw new EntityNotFoundException("Departamento não encontrado.");
 
 		return department;
 	}
@@ -56,7 +56,7 @@ public class DepartmentService {
 			dao.deleteById(id);
 		} catch (DBIntegrityException e) {
 			throw new BusinessException(
-					"Não foi possível deletar o departamento pois ele possui vendedores associados");
+					"Não foi possível deletar o departamento pois ele possui vendedores associados.");
 		}
 	}
 
