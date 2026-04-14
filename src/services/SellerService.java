@@ -34,15 +34,6 @@ public class SellerService {
 		}
 	}
 	
-	private void validateDepartment(Department department) {
-		if (department == null) {
-			throw new ValidationException("O departamento não pode ser nulo.");
-		}
-		if (department.getName() == null || department.getName().isBlank()) {
-			throw new ValidationException("O nome do departamento não pode ser vazio.");
-		}
-	}
-
 	public void insert(Seller seller) {
 		validateSeller(seller);
 
@@ -78,7 +69,9 @@ public class SellerService {
 	}
 
 	public List<Seller> findByDepartment(Department department) {
-		validateDepartment(department);
+		if (department == null || department.getId() == null) {
+			throw new ValidationException("Departamento inválido.");
+		}
 
 		return sellerDao.findByDepartment(department);
 	}

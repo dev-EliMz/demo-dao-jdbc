@@ -13,7 +13,7 @@ import model.entities.Seller;
 import services.DepartmentService;
 import services.SellerService;
 
-public class SellerMenu {
+public class SellerMenu extends EntityMenu{
 
 	private final SellerService sellerService;
 	private final DepartmentService departmentService;
@@ -26,12 +26,6 @@ public class SellerMenu {
 		sdf.setLenient(false);
 	}
 
-	private String scanName(Scanner sc) {
-
-		System.out.println("\nDigite o nome do vendedor");
-		return sc.nextLine().strip();
-	}
-
 	private String scanEmail(Scanner sc) {
 
 		System.out.println("\nDigite o e-mail do vendedor: ");
@@ -41,12 +35,6 @@ public class SellerMenu {
 	private String scanBirthDate(Scanner sc){
 
 		System.out.println("\nDigite a data de nascimento do vendedor: (DD-MM-YYYY) ");
-		return sc.nextLine().strip();
-	}
-
-	private String scanId(Scanner sc, String entity) {
-
-		System.out.println("\nDigite o id do " + String.format("%s: ", entity));
 		return sc.nextLine().strip();
 	}
 
@@ -69,23 +57,6 @@ public class SellerMenu {
 				return birthDate;
 			} catch (ParseException e) {
 				System.out.println("Data inválida. Digite uma data válida com o formato DD-MM-YYYY.");
-			}
-		}
-	}
-	
-	private int readId(Scanner sc, String entity) {
-		String input;
-		int id;
-		
-		while (true) {
-			
-			input = scanId(sc, entity);
-			try {
-				
-				id = Integer.parseInt(input);
-				return id;
-			} catch (NumberFormatException e) {
-				System.out.println("Valor inválido. Digite um valor numérico inteiro.");
 			}
 		}
 	}
@@ -134,7 +105,7 @@ public class SellerMenu {
 
 		Department department;
 		
-		name = scanName(sc);
+		name = scanName(sc, "vendedor");
 		seller.setName(name);
 
 		email = scanEmail(sc);
@@ -170,18 +141,6 @@ public class SellerMenu {
 				System.out.println("Erro: "  + e.getMessage());
 			}
 		}
-	}
-	
-	private boolean validateOperation(Scanner sc) {
-		System.out.println("Deseja confirmar a operação? (Y/n) ");
-		String input = sc.nextLine().strip();
-		
-		if (input.equalsIgnoreCase("y")) {
-			return true;
-		}
-		
-		System.out.println("Operação cancelada.");
-		return false;
 	}
 
 	public void insert(Scanner sc) {
@@ -250,7 +209,7 @@ public class SellerMenu {
 		System.out.println("Vendedor: ");
 		System.out.println("Nome: " + seller.getName() + ".");
 		System.out.println("E-mail: " + seller.getEmail() + ".");
-		System.out.println("Data de nascimento: " + seller.getBirthDate() + ".");
+		System.out.println("Data de nascimento: " + sdf.format(seller.getBirthDate()) + ".");
 		System.out.println("Salário: R$" + seller.getBaseSalary() + ".");
 		System.out.println("Departamento: " + seller.getDepartment().getName() + ".");
 		System.out.println();
