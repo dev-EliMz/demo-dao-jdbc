@@ -86,7 +86,7 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 			
 			st.executeUpdate();
 		} catch (SQLException e) {
-			throw new DBIntegrityException("Erro de integridade ao tentar deletar departamento!", e);
+			throw new DBIntegrityException("Erro de integridade ao tentar deletar departamento!");
 		} finally {
 			DB.closeStatement(st);
 		}
