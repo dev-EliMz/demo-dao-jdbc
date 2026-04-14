@@ -126,5 +126,6 @@ public class DepartmentMenu extends EntityMenu{
 		
 		System.out.println("\nLista de departamentos:");
 		departments.forEach(System.out::println);
+		wait(sc);
 	}
 }

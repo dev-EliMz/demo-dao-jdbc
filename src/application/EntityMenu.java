@@ -44,4 +44,5 @@ public abstract class EntityMenu {
 		System.out.println("Operação cancelada.");
 		return false;
 	}
+
 }

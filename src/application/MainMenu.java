@@ -7,10 +7,14 @@ import services.SellerService;
 
 public class MainMenu {
 
-	private final SellerService sellerService = new SellerService();
-	private final DepartmentService departmentService = new DepartmentService();
-	private final SellerMenu sellerMenu = new SellerMenu(sellerService, departmentService);
-	private final DepartmentMenu departmentMenu = new DepartmentMenu(departmentService);
+	private final SellerMenu sellerMenu;
+	private final DepartmentMenu departmentMenu;
+	
+
+	public MainMenu(SellerService sellerService, DepartmentService departmentService) {
+		sellerMenu = new SellerMenu(sellerService, departmentService);
+		departmentMenu = new DepartmentMenu(departmentService);
+	}
 
 	private String scanOption(Scanner sc) {
 		System.out.print("Escolha umas das opções: ");
@@ -31,6 +35,11 @@ public class MainMenu {
 				System.out.println("Valor inválido. Digite um valor numérico inteiro.");
 			}
 		}
+	}
+	
+	private void waitForNewline(Scanner sc) {
+		System.out.println("Pressione enter para continuar...  ");
+		sc.nextLine();
 	}
 
 	public void runMenu(Scanner sc) {
@@ -56,43 +65,56 @@ public class MainMenu {
 
 			switch (option) {
 				case 0:
+					waitForNewline(sc);
 					System.out.println("\n\nSaindo...");
 					break;
 				case 1:
 					sellerMenu.insert(sc);
+					waitForNewline(sc);
 					break;
 				case 2:
 					sellerMenu.update(sc);
+					waitForNewline(sc);
 					break;
 				case 3: 
 					sellerMenu.deleteById(sc);
+					waitForNewline(sc);
 					break;
 				case 4:
 					sellerMenu.findById(sc);
+					waitForNewline(sc);
 					break;
 				case 5: 
 					sellerMenu.findByDepartment(sc);
+					waitForNewline(sc);
 					break;
 				case 6: 
 					sellerMenu.findAll(sc);
+					waitForNewline(sc);
 					break;
 				case 7:
 					departmentMenu.insert(sc);
+					waitForNewline(sc);
 					break;
 				case 8: 
 					departmentMenu.update(sc);
+					waitForNewline(sc);
 					break;
 				case 9:
 					departmentMenu.deleteById(sc);
+					waitForNewline(sc);
 					break;
 				case 10: 
 					departmentMenu.findById(sc);
+					waitForNewline(sc);
 					break;
 				case 11:
 					departmentMenu.findAll(sc);
+					waitForNewline(sc);
 					break;
 				default:
 					System.out.println("Opção inválida! Tente novamente.");
+					waitForNewline(sc);
 			}
 
 		} while (option != 0);
