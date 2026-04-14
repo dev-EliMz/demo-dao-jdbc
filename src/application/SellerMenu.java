@@ -117,13 +117,13 @@ public class SellerMenu {
 			try {
 				
 				department = departmentService.findById(depID);
+				System.out.println("Dados do departamento: " + department);
+				
 				return department;
 			} catch (EntityNotFoundException e) {
 				System.out.println("Erro: " + e.getMessage());
-				if (validateOperation(sc)) return null; //to fix this 
 			}
 		}
-		//TODO
 	}
 	
 	private Seller readSellerData(Seller seller, Scanner sc) {
@@ -158,15 +158,14 @@ public class SellerMenu {
 		Seller seller;
 		
 		while (true) {
+			
+			sellID = readId(sc, "vendedor");
 			try {
-				sellID = Integer.parseInt(scanId(sc, "vendedor"));
-				seller = sellerService.findById(sellID);
 				
+				seller = sellerService.findById(sellID);
 				System.out.println("Dados atuais do vendedor: " + seller);
 
 				return seller;
-			} catch (NumberFormatException e) {
-				System.out.println("Valor inválido. Digite um valor numérico inteiro.");
 			} catch (EntityNotFoundException e) {
 				System.out.println("Erro: "  + e.getMessage());
 			}
@@ -251,7 +250,7 @@ public class SellerMenu {
 		System.out.println("Vendedor: ");
 		System.out.println("Nome: " + seller.getName() + ".");
 		System.out.println("E-mail: " + seller.getEmail() + ".");
-		System.out.println("Ano de nascimento: " + seller.getBirthDate() + ".");
+		System.out.println("Data de nascimento: " + seller.getBirthDate() + ".");
 		System.out.println("Salário: R$" + seller.getBaseSalary() + ".");
 		System.out.println("Departamento: " + seller.getDepartment().getName() + ".");
 		System.out.println();
@@ -261,7 +260,42 @@ public class SellerMenu {
 		
 		List<Seller> sellers;
 		Department department;
-		 //TODO
 		
+		while (true) {
+			
+			department = fetchDepartment(sc);
+			try {
+				
+				sellers = sellerService.findByDepartment(department);
+				break;
+			} catch (ValidationException e) {
+				System.out.println("Erro: " + e.getMessage());
+			}
+		}
+		
+		if (sellers.isEmpty()) {
+			System.out.println("Nenhum vendedor associado ao departamento foi encontrado!");
+			return;
+		}
+		
+		System.out.println("\nLista de vendedores:");
+		sellers.forEach(System.out::println);
 	}
+	
+	public void findAll(Scanner sc) {
+		
+		List<Seller> sellers;
+		
+		sellers = sellerService.findAll();
+		
+		if (sellers.isEmpty()) {
+			System.out.println("Nenhum vendedor cadastrado no banco de dados.");
+			return;
+		}
+		
+		System.out.println("\nLista de vendedores:");
+		sellers.forEach(System.out::println);
+	}
+	
+	
 }
