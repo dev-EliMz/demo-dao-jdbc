@@ -3,6 +3,7 @@ package application;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 import exceptions.EntityNotFoundException;
@@ -25,9 +26,9 @@ public class SellerMenu {
 		sdf.setLenient(false);
 	}
 
-	private String scanName(Scanner sc, String entity) {
+	private String scanName(Scanner sc) {
 
-		System.out.println("\nDigite o nome do " + String.format("%s: ", entity));
+		System.out.println("\nDigite o nome do vendedor");
 		return sc.nextLine().strip();
 	}
 
@@ -37,12 +38,10 @@ public class SellerMenu {
 		return sc.nextLine().strip();
 	}
 
-	private Date scanBirthDate(Scanner sc) throws ParseException {
+	private String scanBirthDate(Scanner sc){
 
 		System.out.println("\nDigite a data de nascimento do vendedor: (DD-MM-YYYY) ");
-		Date date = sdf.parse(sc.nextLine().strip());
-
-		return date;
+		return sc.nextLine().strip();
 	}
 
 	private String scanId(Scanner sc, String entity) {
@@ -57,69 +56,141 @@ public class SellerMenu {
 		return sc.nextLine().strip();
 	}
 	
-	private Seller readSellerData(Scanner sc) {
+	private Date readBirthDate(Scanner sc) {
+		String input;
+		Date birthDate;
+		
+		while (true) {
+			
+			input = scanBirthDate(sc);
+			try {
+				
+				birthDate = sdf.parse(input);
+				return birthDate;
+			} catch (ParseException e) {
+				System.out.println("Data inválida. Digite uma data válida com o formato DD-MM-YYYY.");
+			}
+		}
+	}
+	
+	private int readId(Scanner sc, String entity) {
+		String input;
+		int id;
+		
+		while (true) {
+			
+			input = scanId(sc, entity);
+			try {
+				
+				id = Integer.parseInt(input);
+				return id;
+			} catch (NumberFormatException e) {
+				System.out.println("Valor inválido. Digite um valor numérico inteiro.");
+			}
+		}
+	}
+	
+	private double readSalary(Scanner sc) {
+		String input;
+		double salary;
+		
+		while (true) {
+			
+			input = scanSalary(sc);
+			try {
+				
+				salary = Double.parseDouble(input);
+				return salary;
+			} catch (NumberFormatException e) {
+				System.out.println("Valor inválido. Digite um valor númerico em reais.");
+			}
+		}
+	}
+	
+	private Department fetchDepartment(Scanner sc) {
+		int depID;
+		Department department;
+		
+		while (true) {
+			depID = readId(sc, "departamento");
+			
+			try {
+				
+				department = departmentService.findById(depID);
+				return department;
+			} catch (EntityNotFoundException e) {
+				System.out.println("Erro: " + e.getMessage());
+				if (validateOperation(sc)) return null; //to fix this 
+			}
+		}
+		//TODO
+	}
+	
+	private Seller readSellerData(Seller seller, Scanner sc) {
 		
 		String name, email;
-		Date birthDate = null;
-		int depID;
+		Date birthDate;
 		double baseSalary = 0.0;
 
-		Seller seller = new Seller();
-		Department department = new Department();
+		Department department;
 		
-		name = scanName(sc, "vendedor");
+		name = scanName(sc);
 		seller.setName(name);
 
 		email = scanEmail(sc);
 		seller.setEmail(email);
 
+		birthDate = readBirthDate(sc);
+		seller.setBirthDate(birthDate);
+		
+		baseSalary = readSalary(sc);
+		seller.setBaseSalary(baseSalary);
+
+		department = fetchDepartment(sc);
+		seller.setDepartment(department);
+		
+		return seller;
+	}
+	
+	private Seller fetchSellerData(Scanner sc) {
+		
+		int sellID;
+		Seller seller;
+		
 		while (true) {
 			try {
-				birthDate = scanBirthDate(sc);
-				seller.setBirthDate(birthDate);
+				sellID = Integer.parseInt(scanId(sc, "vendedor"));
+				seller = sellerService.findById(sellID);
+				
+				System.out.println("Dados atuais do vendedor: " + seller);
 
-				break;
-			} catch (ParseException e) {
-				System.out.println("Data inválida. Digite uma data válida com o formato DD-MM-YYYY.");
-			}
-		}
-
-		while (true) {
-			try {
-				baseSalary = Double.parseDouble(scanSalary(sc));
-				seller.setBaseSalary(baseSalary);
-
-				break;
-			} catch (NumberFormatException e) {
-				System.out.println("Valor inválido. Digite um valor númerico em reais.");
-			}
-		}
-
-		while (true) {
-			try {
-				depID = Integer.parseInt(scanId(sc, "departamento"));
-
-				department = departmentService.findById(depID);
-				System.out.println("Departamento: " + department.getName());
-				seller.setDepartment(department);
-
-				break;
+				return seller;
 			} catch (NumberFormatException e) {
 				System.out.println("Valor inválido. Digite um valor numérico inteiro.");
 			} catch (EntityNotFoundException e) {
-				System.out.println("Erro: " + e.getMessage());
+				System.out.println("Erro: "  + e.getMessage());
 			}
 		}
+	}
+	
+	private boolean validateOperation(Scanner sc) {
+		System.out.println("Deseja confirmar a operação? (Y/n) ");
+		String input = sc.nextLine().strip();
 		
-		return seller;
+		if (input.equalsIgnoreCase("y")) {
+			return true;
+		}
+		
+		System.out.println("Operação cancelada.");
+		return false;
 	}
 
 	public void insert(Scanner sc) {
 
-		Seller seller = null;
+		Seller seller = new Seller();
 		while (true) {
 
-			seller = readSellerData(sc);
+			readSellerData(seller, sc);
 
 			try {
 				sellerService.insert(seller);
@@ -127,35 +198,18 @@ public class SellerMenu {
 				break;
 			} catch (ValidationException e) {
 				System.out.println("Erro: " + e.getMessage() + " Tente novamente com valores válidos.");
-			}
+			} 
 		}
 	}
 
 	public void update(Scanner sc) {
 
-		int sellID;
-		Seller seller = null;
-		Seller current = null;
+		Seller seller;
 		
 		while (true) {
 
-			while (true) {
-				try {
-					sellID = Integer.parseInt(scanId(sc, "vendedor"));
-					current = sellerService.findById(sellID);
-					
-					System.out.println("Dados atuais do vendedor: " + current);
-
-					break;
-				} catch (NumberFormatException e) {
-					System.out.println("Valor inválido. Digite um valor numérico inteiro.");
-				} catch (EntityNotFoundException e) {
-					System.out.println("Erro: "  + e.getMessage());
-				}
-			}
-
-			seller = readSellerData(sc);
-			seller.setId(sellID);
+			seller = fetchSellerData(sc);
+			seller = readSellerData(seller, sc);
 
 			try {
 				sellerService.update(seller);
@@ -166,5 +220,48 @@ public class SellerMenu {
 				System.out.println("Erro: " + e.getMessage() + " Tente novamente com valores válidos.");
 			} 
 		}
+	}
+	
+	public void deleteById(Scanner sc) {
+		
+		Seller seller;
+		
+		while (true) {
+			
+			seller = fetchSellerData(sc);
+			if (!validateOperation(sc)) return;
+			
+			try {
+				sellerService.deleteById(seller.getId());
+				System.out.println("Vendedor deletado do banco de dados.");
+				
+				break;
+			} catch (ValidationException e) {
+				System.out.println("Erro: " + e.getMessage());
+			}
+		}
+	}
+	
+	public void findById(Scanner sc) {
+		
+		Seller seller;
+		
+		seller = fetchSellerData(sc);
+		
+		System.out.println("Vendedor: ");
+		System.out.println("Nome: " + seller.getName() + ".");
+		System.out.println("E-mail: " + seller.getEmail() + ".");
+		System.out.println("Ano de nascimento: " + seller.getBirthDate() + ".");
+		System.out.println("Salário: R$" + seller.getBaseSalary() + ".");
+		System.out.println("Departamento: " + seller.getDepartment().getName() + ".");
+		System.out.println();
+	}
+	
+	public void findByDepartment(Scanner sc) {
+		
+		List<Seller> sellers;
+		Department department;
+		 //TODO
+		
 	}
 }
