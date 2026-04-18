@@ -1,0 +1,14 @@
+CREATE TABLE department (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE seller (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    BirthDate DATE NOT NULL,
+    BaseSalary DOUBLE NOT NULL,
+    DepartmentId INT NOT NULL,
+    FOREIGN KEY (DepartmentId) REFERENCES department(Id)
+);
