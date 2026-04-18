@@ -123,7 +123,9 @@ Após configurar e testar o banco, edite o arquivo "dbconfig.propertiesExample" 
 Exemplo:
 
 dburl=jdbc:mariadb://localhost:3306/nome_do_banco 
+
 user=seu_usuario 
+
 password=sua_senha
 
 - Nota: MariaDB geralmente utiliza a porta :3306.
