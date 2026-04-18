@@ -1,0 +1,4 @@
+user=seu_user
+password=sua_senha
+dburl=jdbc:mariadb://localhost:3306/mydatabase
+useSSL=false
