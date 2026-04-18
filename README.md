@@ -71,11 +71,11 @@ Gerencia conexão com o banco, trata excessões de infraestrutura.
 
 1. Clone o repositório:
 
-> git clone https://github.com/dev-EliMz/demo-dao-jdbc.git
+` git clone https://github.com/dev-EliMz/demo-dao-jdbc.git`
 
 2. Vá para o diretório do projeto
 
-> cd demo-dao-jdbc
+` cd demo-dao-jdbc `
 
 ## Banco de dados
 
@@ -89,32 +89,32 @@ Certifique-se de que o projeto contém os arquivos: schema.sql e seed.sql.
 
 Acesse o MariaDB via terminal:
 
-> mysql -u seu_usuario -p -h 
+` mysql -u seu_usuario -p -h `
 
 Crie o banco:
 
-> CREATE DATABASE nome_do_banco;
-> USE nome_do_banco;
+` CREATE DATABASE nome_do_banco;`
+` USE nome_do_banco; `
 
 2. Executar o schema e o seed (estrutura das tabelas e dados iniciais)
 
 Ainda dentro do MariaDB:
 
-> SOURCE caminho/para/demo-dao-jdbc/init.sql;
+` SOURCE caminho/para/demo-dao-jdbc/init.sql;
 
 Exemplos:
 
-> SOURCE $HOME/myprojects/demo-dao-jdbc/init.sql;
+` SOURCE $HOME/myprojects/demo-dao-jdbc/init.sql;
 
 Ou se já estiver no diretório do projeto: 
-> SOURCE init.sql;
+` SOURCE init.sql;
 
 Isso irá executar os arquivos schema e seed.
 
 Verifique se tudo funcionou com:
 
-> SELECT * FROM department;
-> SELECT * FROM seller;
+` SELECT * FROM department; `
+` SELECT * FROM seller; `
 
 5. Configurar conexão
 
@@ -132,7 +132,7 @@ password=sua_senha
 
 Na pasta do projeto (/demo-dao-jdbc/) execute no terminal:
 
-> java application/Main
+` java application/Main `
 
 
 
